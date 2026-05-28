@@ -1,9 +1,10 @@
-package docsrv
+package docs
 
 import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/santhosh-tekuri/jsonschema"
+	// "github.com/santhosh-tekuri/jsonschema"
 )
 
 
@@ -41,6 +42,10 @@ type Schema struct {
 type ValidationError struct {
 	Message string `json:"message"`
 	Errors  []any  `json:"errors,omitempty"`
+}
+
+func (err *ValidationError) Error() error {
+	return errors.New(err.Message)
 }
 
 // CouchDB client wrapper (dense, minimal)
@@ -254,7 +259,7 @@ func (s *DocServer) SaveDocument(d *Document) (*Document, error) {
 
 	// Simple validation (extend with full AJV-like if needed)
 	if err := validateAgainstSchema(sch, d); err != nil {
-		return nil, err
+		return nil, err.Error()
 	}
 
 	// Store
@@ -265,13 +270,13 @@ func (s *DocServer) SaveDocument(d *Document) (*Document, error) {
 	return d, nil
 }
 
-func validateAgainstSchema(sch *Schema, doc *Document) error {
+func validateAgainstSchema(sch *Schema, doc *Document) *ValidationError {
 	// Minimal required fields validation from schema (dense version)
 	var schemaMap map[string]any
 	json.Unmarshal(sch.JSON, &schemaMap)
 
 	required, _ := schemaMap["required"].([]any)
-	props, _ := schemaMap["properties"].(map[string]any)
+	// props, _ := schemaMap["properties"].(map[string]any)
 
 	if len(required) > 0 {
 		for _, r := range required {
