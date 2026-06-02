@@ -17,3 +17,8 @@ The system uses a NoSQL db that stored the schema information, the layouts aswel
 ## How to use
 podman run -ti ... couchdb
 go run ...
+
+# Project layout
+There is a main method that instantiates coucdb connections, upserts the relevant query definitions & example documents (incl. basic schema definitions), instantiates the routes and its handlers. The domain project
+
+The application must serve a static website that calls the endpoints and presents the data and dynamically renders markup fragments.

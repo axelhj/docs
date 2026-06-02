@@ -6,15 +6,15 @@ import (
 )
 
 //go:embed schemas/*.json
-var schemaFS embed.FS
+var SchemasFS embed.FS
 
 //go:embed queries/*.json
-var queryFS embed.FS
+var QueriesFS embed.FS
 
 func DoReadFile(loc embed.FS, filename string) ([]byte, error) {
 	data, err := loc.ReadFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("failed")
+		return nil, fmt.Errorf("failed to read %s: %w", filename, err)
 	}
 	return data, nil
 }
