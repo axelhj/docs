@@ -4,15 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // CouchDB client wrapper (dense, minimal)
@@ -55,6 +52,7 @@ func (c *CouchDB) req(method, path string, body io.Reader) (*http.Response, erro
 
 // Core DB ops
 func (c *CouchDB) EnsureDB(name string) error {
+	// TODO: Make sure an actual base-url and appropriate protocol is set/defined.
 	_, err := c.req("PUT", "/"+name, nil)
 	if err != nil && !strings.Contains(err.Error(), "412") { // already exists
 		return err
@@ -63,8 +61,8 @@ func (c *CouchDB) EnsureDB(name string) error {
 }
 
 type ViewRow struct {
-	ID    string         `json:"id"`
-	Key   any            `json:"key"`
+	ID    string          `json:"id"`
+	Key   any             `json:"key"`
 	Value json.RawMessage `json:"value"`
 	Doc   json.RawMessage `json:"doc,omitempty"`
 }
@@ -102,7 +100,9 @@ func (c *CouchDB) Put(db, id string, doc any) (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
-	var r struct{ Rev string `json:"rev"` }
+	var r struct {
+		Rev string `json:"rev"`
+	}
 	json.NewDecoder(resp.Body).Decode(&r)
 	return r.Rev, nil
 }
@@ -140,4 +140,3 @@ func (c *CouchDB) List(db string, includeDocs bool) ([]json.RawMessage, error) {
 	}
 	return docs, nil
 }
-

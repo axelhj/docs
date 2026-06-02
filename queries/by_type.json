@@ -1,0 +1,10 @@
+{
+    "design": "schema",
+    "view": "schema-by-type",
+    "definition": "function(doc) {\
+        if(doc.type) {\
+            emit(doc.type, doc);\
+        }\
+    }"
+}
+

@@ -1,0 +1,39 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Document",
+  "type": "object",
+  "required": [
+    "title",
+    "body"
+  ],
+  "properties": {
+    "title": {
+      "title": "Title",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "Title"
+      ],
+      "pattern": "^.*$"
+    },
+    "body": {
+      "title": "Body",
+      "type": "string",
+      "default": "",
+      "examples": [
+        "Text"
+      ],
+      "pattern": "^.*$"
+    },
+    "count": {
+      "title": "Count",
+      "type": "integer",
+      "examples": [
+        8
+      ],
+      "default": 0
+    }
+  }
+}
+

@@ -5,6 +5,7 @@ go 1.26.3
 require (
 	github.com/gofiber/fiber/v3 v3.3.0
 	github.com/google/uuid v1.6.0
+	github.com/santhosh-tekuri/jsonschema v1.2.4
 	github.com/stretchr/testify v1.11.1
 )
 
