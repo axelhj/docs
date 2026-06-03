@@ -1,2 +1,4 @@
 /.env*
 !/.env.example
+# Easily rebuild mocks using `go generate ./...`
+/internal/mocks

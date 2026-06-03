@@ -12,8 +12,17 @@ import (
 	"time"
 )
 
-// CouchDB client wrapper (dense, minimal)
+//mockery:generate: true
+type CouchDBClient interface {
+	EnsureDB(name string) error;
+	QueryView(db, design, view string, params map[string]string) ([]ViewRow, error);
+	Put(db, id string, doc any) (string, error);
+	Get(db, id string, out any) error;
+	List(db string, includeDocs bool) ([]json.RawMessage, error);
+}
+
 type CouchDB struct {
+	dber CouchDBClient
 	baseURL string
 	client  *http.Client
 	auth    string

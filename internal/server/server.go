@@ -5,15 +5,15 @@ import (
 	"fmt"
 
 	"github.com/axelhj/docs/internal/domain"
-	"github.com/axelhj/docs/internal/service"
 	"github.com/axelhj/docs/internal/repository"
+	"github.com/axelhj/docs/internal/service"
 	"github.com/google/uuid"
 )
 
 type DocServer struct {
-	db     *repository.CouchDB
-	schema *repository.CouchDB // alias for schema db
-	docs   *repository.CouchDB // alias for documents db
+	db     repository.CouchDBClient
+	schema repository.CouchDBClient // alias for schema db
+	docs   repository.CouchDBClient // alias for documents db
 }
 
 func NewDocServer(host, user, pass string) (*DocServer, error) {
