@@ -29,13 +29,14 @@ type CouchDB struct {
 	mu      sync.RWMutex
 }
 
-func NewCouchDB(host, user, pass string) *CouchDB {
+func NewCouchDB(protocol, port, host, user, pass string) *CouchDB {
 	auth := ""
 	if user != "" || pass != "" {
 		auth = "Basic " + basicAuth(user, pass)
 	}
+	url := fmt.Sprintf("%v://%v:%v/", protocol, host, port)
 	return &CouchDB{
-		baseURL: strings.TrimSuffix(host, "/"),
+		baseURL: strings.TrimSuffix(url, "/"),
 		client:  &http.Client{Timeout: 10 * time.Second},
 		auth:    auth,
 	}

@@ -18,12 +18,12 @@ func NewApp(cfg *config.Config) {
 	// docService := service.NewDocumentService(couch)
 
 	contentHandler := server.NewContentHandler()
-	schemaHandler := server.NewSchemaHandler() // etc.
+	schemaHandler := server.NewSchemaHandler()
 
 	// Todo: Use the server/service
-	_, err := server.NewDocServer(cfg.CouchHost, cfg.CouchUser, cfg.CouchPassword)
+	_, err := server.NewDocServer(cfg.CouchHost, cfg.CouchPort, cfg.CouchUser, cfg.CouchPassword)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("NewApp fatal %v", err)
 	}
 
 	app := fiber.New(fiber.Config{
@@ -34,5 +34,6 @@ func NewApp(cfg *config.Config) {
 
 	server.Setup(app, contentHandler, schemaHandler)
 
-	app.Listen(":3000")
+	log.Print(cfg.AppBindExpr)
+	app.Listen(cfg.AppBindExpr)
 }

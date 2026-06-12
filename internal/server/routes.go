@@ -4,6 +4,7 @@ import (
 	// "github.com/axelhj/docs/internal/domain"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/static"
 )
 
 func Setup(
@@ -22,6 +23,8 @@ func Setup(
 	schemas := api.Group("/schema")
 	schemas.Post("/", schemaHandler.Create)
 	schemas.Get("/", schemaHandler.GetAll)
+
+	app.Use("/*", static.New("./public"))
 }
 
 // app.Get("/content/:id", func(c *fiber.Ctx) error {

@@ -48,8 +48,8 @@ func (h *ContentHandler) GetOne(c fiber.Ctx) error {
 	// if err != nil {
 	// 	return c.Status(404).JSON(fiber.Map{"error": "Not found. Did you submit the wrong ID?"})
 	// }
-	// return c.JSON(doc)
-	return nil
+	return c.JSON("Hej")
+	// return nil
 }
 
 func (h *ContentHandler) GetAll(c fiber.Ctx) error {

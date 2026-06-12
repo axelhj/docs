@@ -12,12 +12,12 @@ import (
 
 type DocServer struct {
 	db     repository.CouchDBClient
-	schema repository.CouchDBClient // alias for schema db
-	docs   repository.CouchDBClient // alias for documents db
+	schema repository.CouchDBClient // "alias" for schema db
+	docs   repository.CouchDBClient // "alias" for documents db
 }
 
-func NewDocServer(host, user, pass string) (*DocServer, error) {
-	c := repository.NewCouchDB(host, user, pass)
+func NewDocServer(host, port, user, pass string) (*DocServer, error) {
+	c := repository.NewCouchDB("http", port, host, user, pass)
 	if err := c.EnsureDB("schema"); err != nil {
 		return nil, err
 	}
